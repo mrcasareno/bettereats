@@ -1,6 +1,7 @@
 import { Text, Pressable, StyleSheet, View } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import ProductButton from "../components/ProductButton";
+import PaymentButton from "../components/PaymentButton";
 
 function UserPreferences() {
 
@@ -62,6 +63,39 @@ function UserPreferences() {
                 <Text style={styles.categoryText}>Preferred Payment:</Text>
             </View>
 
+<<<<<<< Updated upstream
+=======
+            <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
+                    <PaymentButton>Cash</PaymentButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <PaymentButton>Card</PaymentButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <PaymentButton>EBT</PaymentButton>
+                </View>
+                
+            </View>
+
+            <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
+                    <PaymentButton>Mobile</PaymentButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <PaymentButton>Checks</PaymentButton>
+                </View>
+                
+            </View>
+
+            <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
+                    <ProductButton>OK</ProductButton>
+                </View>
+                
+            </View>
+            
+>>>>>>> Stashed changes
 
         </View>
 
