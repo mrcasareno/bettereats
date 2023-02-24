@@ -1,17 +1,21 @@
-import { Text, Pressable, StyleSheet, View } from "react-native";
+import { Text, Pressable, StyleSheet, View, StatusBar } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import ProductButton from "../components/ProductButton";
 import PaymentButton from "../components/PaymentButton";
-
-function UserPreferences() {
-
+import OkButton from "../components/OkButton"
+function UserPreferences({ navigation }) {
+    function nextPageClick() {
+        navigation.navigate('MarketsScreen');
+    }
     return (
         <View>
-            <LinearGradient colors={['#54a86b', '#dff7e5']}>
-                <View style={styles.header}>
+            <View style={styles.header} >
+
+                <LinearGradient colors={['#54a86b', '#dff7e5']}>
                     <Text style={styles.headerText} >bettereats</Text>
-                </View>
-            </LinearGradient>
+                </LinearGradient >
+                <StatusBar style="auto" />
+            </View>
             <View style={styles.textContainer}>
                 <Text style={styles.categoryText}>Preferred Products:</Text>
             </View>
@@ -73,7 +77,7 @@ function UserPreferences() {
                 <View style={styles.buttonContainer}>
                     <PaymentButton>EBT</PaymentButton>
                 </View>
-                
+
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -83,16 +87,16 @@ function UserPreferences() {
                 <View style={styles.buttonContainer}>
                     <PaymentButton>Checks</PaymentButton>
                 </View>
-                
+
             </View>
 
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttonContainer}>
-                    <ProductButton>OK</ProductButton>
+                    <OkButton title={'OK'} onPress={nextPageClick} />
                 </View>
-                
+
             </View>
-        </View>
+        </View >
 
     );
 }
@@ -100,10 +104,12 @@ function UserPreferences() {
 export default UserPreferences;
 
 const styles = StyleSheet.create({
+
     header: {
         backgroundColor: '#cccccc',
         fontSize: 50,
-        padding: 16,
+        padding: 0,
+
 
 
     },
@@ -112,7 +118,9 @@ const styles = StyleSheet.create({
         fontSize: 50,
         textAlign: "center",
         marginTop: 30,
-        fontWeight: '500'
+        fontWeight: '500',
+        padding: 20
+
     },
     categoryText: {
         color: '#black',
