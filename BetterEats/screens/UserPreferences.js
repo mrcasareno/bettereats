@@ -63,8 +63,6 @@ function UserPreferences() {
                 <Text style={styles.categoryText}>Preferred Payment:</Text>
             </View>
 
-<<<<<<< Updated upstream
-=======
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttonContainer}>
                     <PaymentButton>Cash</PaymentButton>
@@ -94,9 +92,6 @@ function UserPreferences() {
                 </View>
                 
             </View>
-            
->>>>>>> Stashed changes
-
         </View>
 
     );
