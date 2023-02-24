@@ -6,7 +6,7 @@ function UserPreferences() {
 
     return (
         <View>
-            <LinearGradient colors={['#54a86b','#dff7e5']}>
+            <LinearGradient colors={['#54a86b', '#dff7e5']}>
                 <View style={styles.header}>
                     <Text style={styles.headerText} >bettereats</Text>
                 </View>
@@ -22,7 +22,7 @@ function UserPreferences() {
                 <View style={styles.buttonContainer}>
                     <ProductButton>Vegetables</ProductButton>
                 </View>
-                
+
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -32,7 +32,7 @@ function UserPreferences() {
                 <View style={styles.buttonContainer}>
                     <ProductButton>Baked Goods</ProductButton>
                 </View>
-                
+
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -55,14 +55,14 @@ function UserPreferences() {
                 <View style={styles.buttonContainer}>
                     <ProductButton>Flowers</ProductButton>
                 </View>
-                
+
             </View>
 
             <View style={styles.textContainer}>
                 <Text style={styles.categoryText}>Preferred Payment:</Text>
             </View>
 
-            
+
         </View>
 
     );
@@ -72,7 +72,11 @@ export default UserPreferences;
 
 const styles = StyleSheet.create({
     header: {
+        backgroundColor: '#cccccc',
+        fontSize: 50,
         padding: 16,
+
+
     },
     headerText: {
         color: 'black',
@@ -96,8 +100,9 @@ const styles = StyleSheet.create({
     },
     productsContainer: {
         padding: 16,
-        marginTop: 30,
-        backgroundColor: '#eeeeee',
+        marginTop: 100,
+        marginHorizontal: 24,
+        backgroundColor: 'white',
         borderRadius: 8,
     },
     buttonsContainer: {
