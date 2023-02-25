@@ -107,10 +107,7 @@ const styles = StyleSheet.create({
 
     header: {
         backgroundColor: '#cccccc',
-        fontSize: 50,
         padding: 0,
-
-
 
     },
     headerText: {
