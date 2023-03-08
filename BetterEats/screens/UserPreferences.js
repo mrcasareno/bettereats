@@ -48,7 +48,7 @@ function UserPreferences({ navigation }) {
                     <ProductButton>Juices</ProductButton>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <ProductButton>Bread</ProductButton>
+                    <ProductButton>Dairy</ProductButton>
                 </View>
 
             </View>
@@ -58,10 +58,23 @@ function UserPreferences({ navigation }) {
                     <ProductButton>Crafts</ProductButton>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <ProductButton>Flowers</ProductButton>
+                    <ProductButton>Plants</ProductButton>
                 </View>
 
             </View>
+            <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
+                    <ProductButton>Seafood</ProductButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <ProductButton>Eggs</ProductButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <ProductButton>Herbs</ProductButton>
+                </View>
+
+            </View>
+
 
             <View style={styles.textContainer}>
                 <Text style={styles.categoryText}>Preferred Payment:</Text>
