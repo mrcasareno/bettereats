@@ -1,4 +1,5 @@
 import { Text, Pressable, StyleSheet, View, StatusBar } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import ProductButton from "../components/ProductButton";
 import PaymentButton from "../components/PaymentButton";

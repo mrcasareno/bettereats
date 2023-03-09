@@ -1,15 +1,15 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import {useState} from 'react';
+import { useState } from 'react';
 
-function PaymentButton(props){
+function PaymentButton(props) {
     function pressHandler() {
         console.log('Pressed!')
     }
 
-    return(<View style={styles.buttonOuterContainer}>
+    return (<View style={styles.buttonOuterContainer}>
         <Pressable
             onPress={pressHandler}
-            style={( {pressed}) => pressed
+            style={({ pressed }) => pressed
                 ? [styles.buttonInnerContainer, styles.pressed]
                 : styles.buttonInnerContainer}
         >
@@ -21,16 +21,16 @@ function PaymentButton(props){
 export default PaymentButton;
 
 const styles = StyleSheet.create({
-    buttonOuterContainer:{
-        
+    buttonOuterContainer: {
+
         borderRadius: 28,
         margin: 4,
         marginHorizontal: 15,
-        
+
         overflow: 'hidden'
     },
-    
-    buttonInnerContainer:{
+
+    buttonInnerContainer: {
         backgroundColor: '#cccccc',
         paddingVertical: 50,
         paddingHorizontal: 8,
@@ -38,15 +38,15 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 6,
-        
+
     },
-    circleSelect:{},
+    circleSelect: {},
     buttonText: {
         color: 'black',
         textAlign: 'center',
         fontSize: '15'
     },
-    pressed:{
+    pressed: {
         opacity: 0.75,
         backgroundColor: '#403f3f'
     }

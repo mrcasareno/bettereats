@@ -1,15 +1,19 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import savePreference from "../utility/utilityfunctions"
+import { useState } from 'react';
 
 function ProductButton(props) {
-    function pressHandler() {
-        console.log('Pressed!')
+    function pressHandler(itemname) {
+        console.log(itemname)
+        // savePreference(itemname, true)
+        //console.log(getPreference(itemname))
     }
     return (
         <View style={styles.buttonOuterContainer}>
             <Pressable
-                onPress={pressHandler}
-                style={( {pressed}) => pressed
+                onPress={() => pressHandler(props.children)}
+                style={({ pressed }) => pressed
                     ? [styles.buttonInnerContainer, styles.pressed]
                     : styles.buttonInnerContainer}
             >
