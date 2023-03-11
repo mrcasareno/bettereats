@@ -17,6 +17,9 @@ function ProductButton(props) {
     const [seafood, setSeafood] = useState(false)
     const [eggs, setEggs] = useState(false)
     const [herbs, setHerbs] = useState(false)
+    
+    const [isPressed, setPressed] = useState(false);
+      
 
 
 
@@ -122,6 +125,8 @@ function ProductButton(props) {
 
             }
         }
+        
+        setPressed(!isPressed);
 
     }
 
@@ -130,16 +135,20 @@ function ProductButton(props) {
             <Pressable
                 onPress={() => pressHandler(props.children)}
                 on
-                style={({ pressed }) => pressed
-                    ? [styles.buttonInnerContainer, styles.pressed]
-                    : styles.buttonInnerContainer}
+                style={[
+                    styles.buttonUnpressed,
+                    isPressed ? styles.buttonPressed : styles.buttonUnpressed,
+                  ]}
             >
-                <Text style={styles.buttonText}>{props.children}</Text>
+                <Text style={[styles.buttonText, isPressed? styles.buttonTextPressed : styles.buttonTextUnpressed]}>
+                    {props.children}
+                </Text>
             </Pressable>
         </View>
 
     );
 }
+
 
 export default ProductButton;
 
@@ -150,7 +159,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         overflow: 'hidden'
     },
-    buttonInnerContainer: {
+    buttonUnpressed: {
         backgroundColor: '#cccccc',
         paddingVertical: 8,
         paddingHorizontal: 8,
@@ -159,13 +168,18 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 6,
     },
-    buttonText: {
+    buttonTextUnpressed: {
         color: 'black',
         textAlign: 'center',
         fontSize: '15'
     },
-    pressed: {
+    buttonTextPressed: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: '15'
+    },
+    buttonPressed: {
         opacity: 0.75,
         backgroundColor: '#403f3f'
-    }
+    },
 });
