@@ -17,17 +17,13 @@ function ProductButton(props) {
     const [seafood, setSeafood] = useState(false)
     const [eggs, setEggs] = useState(false)
     const [herbs, setHerbs] = useState(false)
-    
+
     const [isPressed, setPressed] = useState(false);
-      
-
-
 
 
 
 
     const getData = async () => {
-        //Multiget
         const values = await AsyncStorage.getAllKeys();
         values.forEach(value => {
             if (value[0] == 'Vegetables') {
@@ -125,7 +121,9 @@ function ProductButton(props) {
 
             }
         }
-        
+        if (isPressed === true) {
+            AsyncStorage.removeItem(itemname)
+        }
         setPressed(!isPressed);
 
     }
@@ -134,13 +132,13 @@ function ProductButton(props) {
         <View style={styles.buttonOuterContainer}>
             <Pressable
                 onPress={() => pressHandler(props.children)}
-                on
+
                 style={[
                     styles.buttonUnpressed,
                     isPressed ? styles.buttonPressed : styles.buttonUnpressed,
-                  ]}
+                ]}
             >
-                <Text style={[styles.buttonText, isPressed? styles.buttonTextPressed : styles.buttonTextUnpressed]}>
+                <Text style={[styles.buttonText, isPressed ? styles.buttonTextPressed : styles.buttonTextUnpressed]}>
                     {props.children}
                 </Text>
             </Pressable>

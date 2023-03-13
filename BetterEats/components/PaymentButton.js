@@ -1,19 +1,70 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
+import React from 'react';
+
 
 function PaymentButton(props) {
-    function pressHandler() {
-        console.log('Pressed!')
+    const [cash, setCash] = useState(false)
+    const [card, setCard] = useState(false)
+    const [ebt, setEbt] = useState(false)
+    const [mobile, setMobile] = useState(false)
+    const [checks, setChecks] = useState(false)
+
+    const [isPressed, setPressed] = useState(false);
+
+    const getData = async () => {
+        const values = await AsyncStorage.getAllKeys();
+        values.forEach(value => {
+            if (value[0] === 'Cash') {
+                setCash(true);
+            } else if (value[0] === 'Card') {
+                setCard(true);
+
+            } else if (value[0] === 'EBT') {
+                setEbt(true);
+            } else if (value[0] === 'Mobile') {
+                setMobile(true);
+
+            } else if (value[0] === 'Checks') {
+                setChecks(true);
+
+            }
+        })
+    };
+    React.useEffect(() => { getData(); });
+    async function pressHandler(itemname) {
+        const values = await AsyncStorage.getAllKeys();
+        console.log(values)
+        if (values.includes(itemname) === false) {
+            await AsyncStorage.setItem(itemname, 'true');
+            if (itemname === 'Cash') {
+                setCash(true);
+            } else if (itemname === 'Card') {
+                setCard(true);
+            } else if (itemname === 'EBT') {
+                setEbt(true);
+            } else if (itemname === 'Mobile') {
+                setMobile(true);
+            } else if (itemname === 'Checks') {
+                setChecks(true);
+            }
+        }
+        if (isPressed === true) {
+            AsyncStorage.removeItem(itemname)
+        }
+        setPressed(!isPressed);
     }
 
     return (<View style={styles.buttonOuterContainer}>
         <Pressable
-            onPress={pressHandler}
-            style={({ pressed }) => pressed
-                ? [styles.buttonInnerContainer, styles.pressed]
-                : styles.buttonInnerContainer}
+            onPress={() => pressHandler(props.children)}
+            style={[
+                styles.buttonUnpressed,
+                isPressed ? styles.buttonPressed : styles.buttonUnpressed,
+            ]}
         >
-            <Text style={styles.buttonText}>{props.children}</Text>
+            <Text style={styles.buttonTextUnpressed}>{props.children}</Text>
         </Pressable>
     </View>);
 }
@@ -26,11 +77,10 @@ const styles = StyleSheet.create({
         borderRadius: 28,
         margin: 4,
         marginHorizontal: 15,
-
         overflow: 'hidden'
     },
 
-    buttonInnerContainer: {
+    buttonUnpressed: {
         backgroundColor: '#cccccc',
         paddingVertical: 50,
         paddingHorizontal: 8,
@@ -40,13 +90,18 @@ const styles = StyleSheet.create({
         shadowRadius: 6,
 
     },
-    circleSelect: {},
-    buttonText: {
+    //circleSelect: {},
+    buttonTextUnpressed: {
         color: 'black',
         textAlign: 'center',
         fontSize: '15'
     },
-    pressed: {
+    buttonTextPressed: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: '15'
+    },
+    buttonPressed: {
         opacity: 0.75,
         backgroundColor: '#403f3f'
     }
