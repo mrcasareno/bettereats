@@ -1,24 +1,31 @@
-import { Text, Pressable, StyleSheet, View, StatusBar, TextInput } from "react-native";
+import { Text, Pressable, StyleSheet, View, StatusBar, TextInput, TouchableOpacity } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import React, { useState, useEffect } from 'react';
 import * as Location from 'expo-location';
 
 function MarketsScreen() {
     //handling search
     const [searchQuery, setSearchQuery] = useState('');
+    const [distanceToggle, setDistanceToggle] = useState('Within 5 Miles')
     const handleSearch = (text) => {
         //searchQuery contains the text for search
         console.log('Performing search for:' + searchQuery);
     };
+    const [toggleOpenDropdown, setToggleDropdown] = useState(false);
+    const toggleDropdown = () => {
+        setToggleDropdown(!toggleOpenDropdown);
+    }
     //handling dropdown menu
     const mileMenu =
         [
-            { label: 'Within 5 miles', value: '5miles' },
-            { label: 'Within 10 miles', value: '10miles' },
-            { label: 'Within 20 miles', value: '20miles' },
-            { label: 'Within 30 miles', value: '30miles' },
-            { label: 'Within 50 miles', value: '50miles' },
+            { label: 'Within 5 miles', value: '5' },
+            { label: 'Within 10 miles', value: '10' },
+            { label: 'Within 20 miles', value: '20' },
+            { label: 'Within 30 miles', value: '30' },
+            { label: 'Within 50 miles', value: '50' },
         ]
 
 
@@ -26,19 +33,32 @@ function MarketsScreen() {
 
     //getting device location
     const [location, setLocation] = useState();
+    async function distanceHandler(itemvalue) {
+
+        setMileValue(itemvalue);
+        AsyncStorage.setItem("distance", itemvalue);
+        // const value = await AsyncStorage.getItem("distance");
+        // console.log(value)
+        // console.log(values["distance"])
+        setDistanceToggle('Within ' + itemvalue + ' miles');
+        setToggleDropdown(false);
+
+    }
 
     useEffect(() => {
         const getPermissions = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            console.log("Please grant location permissions");
-            return;
-        }
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log("Please grant location permissions");
+                return;
+            }
 
-        let currentLocation = await Location.getCurrentPositionAsync({});
-        setLocation(currentLocation);
-        console.log("Location:");
-        console.log(currentLocation);
+            let currentLocation = await Location.getCurrentPositionAsync({});
+            setLocation(currentLocation);
+            AsyncStorage.setItem("x_cord", currentLocation["coords"]["longitude"].toString())
+            AsyncStorage.setItem("y_cord", currentLocation["coords"]["latitude"].toString())
+
+
         };
         getPermissions();
     }, []);
@@ -64,29 +84,36 @@ function MarketsScreen() {
                     placeholder="Search..."
                 />
             </View>
-            <View>
+            <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.distanceText}>
                     Farmers Markets:
                 </Text>
+                <View >
+                    <TouchableOpacity onPress={toggleDropdown} style={styles.dropDowntoggle} >
+                        <Text style={{ alignSelf: 'center', paddingTop: 3, fontSize: 20 }}>{distanceToggle} &#8595;</Text>
+                    </TouchableOpacity>
+                    {toggleOpenDropdown && (
+                        <Picker
+                            style={{ marginTop: -15 }}
+                            selectedValue={mileValue}
+                            mode="dropdown"
+                            onValueChange={(itemValue) => distanceHandler(itemValue)}>
+                            {mileMenu.map((item, index) => (
+                                <Picker.Item
+                                    key={index}
+                                    label={item.label}
+                                    value={item.value}
+                                />
+                            ))
+                            }
+
+                        </Picker>
+                    )}
+                </View>
+
             </View>
-            <View style={{ padding: 0 }} >
 
-                <Picker
-                    selectedValue={mileValue}
-                    mode="dropdown"
-                    onValueChange={(itemValue) => setMileValue({ itemValue })}>
-                    {mileMenu.map((item, index) => (
-                        <Picker.Item
-                            key={index}
-                            label={item.label}
-                            value={item.value}
-                        />
-                    ))
-                    }
 
-                </Picker>
-
-            </View>
         </View >);
 }
 export default MarketsScreen;
@@ -117,8 +144,19 @@ const styles = StyleSheet.create({
         color: 'green',
         fontSize: 20,
         textAlign: "center",
-
+        borderLeftWidth: 10,
+        borderRightWidth: 10,
         fontWeight: '500',
 
     },
+    dropDowntoggle: {
+        borderColor: "blue",
+        alignItems: 'center',
+        alignContent: 'center',
+        backgroundColor: '#DDDDDD',
+        width: 200,
+        height: 30,
+        borderRadius: 5
+
+    }
 });

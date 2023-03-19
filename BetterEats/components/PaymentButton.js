@@ -35,7 +35,7 @@ function PaymentButton(props) {
     React.useEffect(() => { getData(); });
     async function pressHandler(itemname) {
         const values = await AsyncStorage.getAllKeys();
-        console.log(values)
+        // console.log(values)
         if (values.includes(itemname) === false) {
             await AsyncStorage.setItem(itemname, 'true');
             if (itemname === 'Cash') {

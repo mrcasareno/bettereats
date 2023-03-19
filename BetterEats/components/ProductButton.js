@@ -78,7 +78,7 @@ function ProductButton(props) {
         //await AsyncStorage.setItem(itemname, 'true');
         //await AsyncStorage.clear();
         const values = await AsyncStorage.getAllKeys();
-        console.log(values)
+        // console.log(values)
 
         if (values.includes(itemname) === false) {
             await AsyncStorage.setItem(itemname, 'true');
