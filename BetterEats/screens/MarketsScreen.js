@@ -44,9 +44,12 @@ function MarketsScreen() {
 
         setMileValue(itemvalue);
         AsyncStorage.setItem("distance", itemvalue);
+
+        // const values = await AsyncStorage.getAllKeys()
+        // console.log(values)
         // const value = await AsyncStorage.getItem("distance");
         // console.log(value)
-        // console.log(values["distance"])
+        // console.log(value["distance"])
         setDistanceToggle('Within ' + itemvalue + ' miles');
         setToggleDropdown(false);
 
