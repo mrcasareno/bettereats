@@ -2,17 +2,24 @@ import { Text, Pressable, StyleSheet, View, StatusBar, TextInput, TouchableOpaci
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { fetchMarkets } from "../utility/http"
+import { getDistanceFromLatLonInMiles, rankMarkets } from "../utility/utilityfunctions";
+
 
 import React, { useState, useEffect } from 'react';
 import * as Location from 'expo-location';
 
 function MarketsScreen() {
+
     //handling search
     const [searchQuery, setSearchQuery] = useState('');
     const [distanceToggle, setDistanceToggle] = useState('Within 5 Miles')
     const handleSearch = (text) => {
         //searchQuery contains the text for search
-        console.log('Performing search for:' + searchQuery);
+
+        console.log('Performing search for: ' + searchQuery);
+        console.log(fetchedMarkets[0]);
+        console.log(preferences);
     };
     const [toggleOpenDropdown, setToggleDropdown] = useState(false);
     const toggleDropdown = () => {
@@ -61,6 +68,74 @@ function MarketsScreen() {
 
         };
         getPermissions();
+    }, []);
+
+    const [fetchedMarkets, setFetchedMarkets] = useState();
+    const [preferences, setPreferences] = useState([]);
+
+
+    // soon as this screen is opened all of the data on markets
+    // as well as user preferences is grabbed and stored into arrays.
+    useEffect(() => {
+        async function getMarkets() {
+            const markets = await fetchMarkets();
+            const date = new Date();
+
+            const weekday = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+            const curr_day = weekday[date.getDay()];
+            const curr_time = date.getUTCHours() * 100 + date.getUTCMinutes();
+            console.log(curr_time, curr_day);
+            try {
+                const allKeys = await AsyncStorage.getAllKeys();
+                const items = await AsyncStorage.multiGet(allKeys);
+                const prefs = items.reduce((obj, [key, value]) => {
+                    if (value === "true") {
+                        obj[key] = true;
+                    }
+                    else if (value === "false") {
+                        obj[key] = false;
+                    }
+                    else {
+                        obj[key] = parseFloat(value);
+                    }
+                    return obj;
+                }, {});
+                setPreferences(prefs);
+
+                for (const market of markets) {
+
+                    // checking if the market is open:
+                    if (market["open"] <= curr_time && curr_time <= market["close"]
+                        && market["open_days"][curr_day] === 1) {
+                        market["is_open"] = 1;
+                    }
+                    else {
+                        market["is_open"] = 0;
+                    }
+
+                    // calculating current distance from user
+                    const distance = getDistanceFromLatLonInMiles(
+                        market["y"], market["x"],
+                        prefs["y_cord"], prefs["x_cord"]
+                    );
+                    console.log(distance, market.name);
+                    console.log(market.y, market.x);
+                    market["distance"] = distance;
+                    if (isNaN(distance)) {
+                        console.log("FAILED: ", market.y, market.x, "ID: ", market.id);
+                    }
+                }
+                console.log(prefs);
+                rankMarkets(markets, preferences);
+            } catch (error) {
+                console.log(error, "wuh oh");
+            }
+
+
+            setFetchedMarkets(markets);
+        }
+
+        getMarkets();
     }, []);
 
     return (
