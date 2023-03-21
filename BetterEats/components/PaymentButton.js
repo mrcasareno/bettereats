@@ -64,7 +64,7 @@ function PaymentButton(props) {
                 isPressed ? styles.buttonPressed : styles.buttonUnpressed,
             ]}
         >
-            <Text style={styles.buttonTextUnpressed}>{props.children}</Text>
+            <Text style={[styles.buttonText, isPressed ? styles.buttonTextPressed : styles.buttonTextUnpressed]}>{props.children}</Text>
         </Pressable>
     </View>);
 }
