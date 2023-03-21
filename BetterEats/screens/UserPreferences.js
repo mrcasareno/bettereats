@@ -3,11 +3,34 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import ProductButton from "../components/ProductButton";
 import PaymentButton from "../components/PaymentButton";
-import OkButton from "../components/OkButton"
+import OkButton from "../components/OkButton";
+import React, { useState, useEffect } from 'react';
+import * as Location from 'expo-location';
+
 function UserPreferences({ navigation }) {
     function nextPageClick() {
         navigation.navigate('MarketsScreen');
     }
+    //getting device location
+    const [location, setLocation] = useState();
+    useEffect(() => {
+        const getPermissions = async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log("Please grant location permissions");
+                return;
+            }
+
+            let currentLocation = await Location.getCurrentPositionAsync({});
+            setLocation(currentLocation);
+            console.log(currentLocation);
+            AsyncStorage.setItem("x_cord", currentLocation["coords"]["longitude"].toString())
+            AsyncStorage.setItem("y_cord", currentLocation["coords"]["latitude"].toString())
+
+
+        };
+        getPermissions();
+    }, []);
     return (
         <View>
             <View style={styles.header} >

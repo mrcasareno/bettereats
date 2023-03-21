@@ -5,10 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchMarkets } from "../utility/http"
 import { getDistanceFromLatLonInMiles, rankMarkets } from "../utility/utilityfunctions";
 
-
-import React, { useState, useEffect } from 'react';
-import * as Location from 'expo-location';
-
 function MarketsScreen() {
 
     //handling search
@@ -38,8 +34,7 @@ function MarketsScreen() {
 
     const [mileValue, setMileValue] = useState(mileMenu.value);
 
-    //getting device location
-    const [location, setLocation] = useState();
+
     async function distanceHandler(itemvalue) {
 
         setMileValue(itemvalue);
@@ -55,23 +50,7 @@ function MarketsScreen() {
 
     }
 
-    useEffect(() => {
-        const getPermissions = async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.log("Please grant location permissions");
-                return;
-            }
 
-            let currentLocation = await Location.getCurrentPositionAsync({});
-            setLocation(currentLocation);
-            AsyncStorage.setItem("x_cord", currentLocation["coords"]["longitude"].toString())
-            AsyncStorage.setItem("y_cord", currentLocation["coords"]["latitude"].toString())
-
-
-        };
-        getPermissions();
-    }, []);
 
     const [fetchedMarkets, setFetchedMarkets] = useState();
     const [preferences, setPreferences] = useState([]);
