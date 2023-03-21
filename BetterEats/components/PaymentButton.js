@@ -14,6 +14,7 @@ function PaymentButton(props) {
     const [isPressed, setPressed] = useState(false);
 
     const getData = async () => {
+        // AsyncStorage.clear();
         const values = await AsyncStorage.getAllKeys();
         values.forEach(value => {
             if (value[0] === 'Cash') {
