@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchMarkets } from "../utility/http"
 import { getDistanceFromLatLonInMiles, rankMarkets } from "../utility/utilityfunctions";
 import Result from "../components/Result";
+import React, { useState, useEffect } from 'react';
 
 function MarketsScreen() {
 
@@ -14,9 +15,9 @@ function MarketsScreen() {
     const handleSearch = (text) => {
         //searchQuery contains the text for search
 
-        console.log('Performing search for: ' + searchQuery);
-        console.log(fetchedMarkets[0]);
-        console.log(preferences);
+        // console.log('Performing search for: ' + searchQuery);
+        // console.log(fetchedMarkets[0]);
+        // console.log(preferences);
     };
     const [toggleOpenDropdown, setToggleDropdown] = useState(false);
     const toggleDropdown = () => {
@@ -25,15 +26,15 @@ function MarketsScreen() {
     //handling dropdown menu
     const mileMenu =
         [
-            { label: 'Within 5 miles', value: '5' },
-            { label: 'Within 10 miles', value: '10' },
-            { label: 'Within 20 miles', value: '20' },
-            { label: 'Within 30 miles', value: '30' },
-            { label: 'Within 50 miles', value: '50' },
+            { label: 'Within 5 miles', value: "5" },
+            { label: 'Within 10 miles', value: "10" },
+            { label: 'Within 20 miles', value: "20" },
+            { label: 'Within 30 miles', value: "30" },
+            { label: 'Within 50 miles', value: "50" },
         ]
 
 
-    const [mileValue, setMileValue] = useState(mileMenu.value);
+    const [mileValue, setMileValue] = useState("5");
 
 
     async function distanceHandler(itemvalue) {
@@ -42,10 +43,11 @@ function MarketsScreen() {
         AsyncStorage.setItem("distance", itemvalue);
 
         const values = await AsyncStorage.getAllKeys()
-        console.log(values)
+        //console.log(values)
         const value = await AsyncStorage.getItem("distance");
-        console.log(value)
-        console.log(value["distance"])
+        console.log("Fuck")
+        //console.log(value["distance"])
+        console.log("Shit")
         setDistanceToggle('Within ' + itemvalue + ' miles');
         setToggleDropdown(false);
 
@@ -55,8 +57,7 @@ function MarketsScreen() {
 
     const [fetchedMarkets, setFetchedMarkets] = useState([]);
     const [preferences, setPreferences] = useState([]);
-
-
+        
     // soon as this screen is opened all of the data on markets
     // as well as user preferences is grabbed and stored into arrays.
     useEffect(() => {
@@ -67,7 +68,7 @@ function MarketsScreen() {
             const weekday = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
             const curr_day = weekday[date.getDay()];
             const curr_time = date.getUTCHours() * 100 + date.getUTCMinutes();
-            console.log(curr_time, curr_day);
+            //console.log(curr_time, curr_day);
             try {
                 const allKeys = await AsyncStorage.getAllKeys();
                 const items = await AsyncStorage.multiGet(allKeys);
@@ -103,24 +104,43 @@ function MarketsScreen() {
                     );
                     // console.log(distance, market.name);
                     // console.log(market.y, market.x);
-                    market["distance"] = distance;
+                    market["distance"] = distance.toFixed(1);
                     if (isNaN(distance)) {
                         // console.log("FAILED: ", market.y, market.x, "ID: ", market.id);
                     }
                 }
-                console.log(prefs);
+                //console.log(prefs);
                 rankMarkets(markets, preferences);
             } catch (error) {
                 console.log(error, "wuh oh");
             }
 
-
             setFetchedMarkets(markets);
-            console.log(fetchedMarkets[0]);
+            
+            
         }
 
         getMarkets();
     }, []);
+
+
+    const [radius, setRadius] = useState(0);
+    const value = AsyncStorage.getItem("distance");
+    if (value === '5'){setRadius(5);}
+    if (value === '10'){setRadius(10);}
+    if (value === '20'){setRadius(20);}
+    if (value === '30'){setRadius(30);}
+    if (value === '50'){setRadius(50);}
+    //console.log(value["distance"]);
+
+    // for (const fm of fetchedMarkets){
+    //     console.log(+fm["distance"]);
+    //     console.log(radius);
+    // }
+    const filteredMarkets = fetchedMarkets.filter((a) => +a.distance <= +mileValue);
+    filteredMarkets.sort((a,b) => a.distance - b.distance)
+    // console.log(filteredMarkets.length)
+    // console.log(fetchedMarkets.length)
 
     return (
         
@@ -175,12 +195,15 @@ function MarketsScreen() {
             {/* adding view for flatlist */}
             <View>
                 <FlatList  
-                    data={fetchedMarkets}
+                    data={filteredMarkets}
                     renderItem={(itemData) => {
                         return <Result 
                                     mName={itemData.item.name} 
                                     mDist={itemData.item.distance}
-                                    mHours={itemData.item.open}
+                                    mOpen={itemData.item.open}
+                                    mClose={itemData.item.close}
+                                    mDays={itemData.item.open_days}
+
                                 />;}}
                     alwaysBounceVertical={false}
                 />

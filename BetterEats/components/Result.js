@@ -9,8 +9,8 @@ function Result(props){
     return(
     <View style={styles.resultOuterContainer}>
         
-        <Text style={styles.nameText}>{props.mName}</Text>
-        <Text style={styles.detailsText}>{props.mHours}</Text>
+        <Text style={styles.nameText}>{props.mName}{props.mDist}</Text>
+        <Text style={styles.detailsText}>{props.mDist}</Text>
        
     </View>);
 }
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     //circleSelect: {},
     nameText: {
         color: 'black',
-        textAlign: 'center',
+        textAlign: 'left',
         marginTop: 15,
         marginLeft: 10,
         fontSize: '20',
