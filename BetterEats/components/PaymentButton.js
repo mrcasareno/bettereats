@@ -14,6 +14,7 @@ function PaymentButton(props) {
     const [isPressed, setPressed] = useState(false);
 
     const getData = async () => {
+        // AsyncStorage.clear();
         const values = await AsyncStorage.getAllKeys();
         values.forEach(value => {
             if (value[0] === 'Cash') {
@@ -64,7 +65,7 @@ function PaymentButton(props) {
                 isPressed ? styles.buttonPressed : styles.buttonUnpressed,
             ]}
         >
-            <Text style={styles.buttonTextUnpressed}>{props.children}</Text>
+            <Text style={[styles.buttonText, isPressed ? styles.buttonTextPressed : styles.buttonTextUnpressed]}>{props.children}</Text>
         </Pressable>
     </View>);
 }

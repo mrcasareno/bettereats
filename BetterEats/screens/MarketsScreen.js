@@ -1,9 +1,10 @@
-import { Text, Pressable, StyleSheet, View, StatusBar, TextInput, TouchableOpacity } from "react-native";
+import { Text, Pressable, StyleSheet, View, StatusBar, TextInput, TouchableOpacity, FlatList } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchMarkets } from "../utility/http"
 import { getDistanceFromLatLonInMiles, rankMarkets } from "../utility/utilityfunctions";
+import Result from "../components/Result";
 
 function MarketsScreen() {
 
@@ -40,11 +41,11 @@ function MarketsScreen() {
         setMileValue(itemvalue);
         AsyncStorage.setItem("distance", itemvalue);
 
-        // const values = await AsyncStorage.getAllKeys()
-        // console.log(values)
-        // const value = await AsyncStorage.getItem("distance");
-        // console.log(value)
-        // console.log(value["distance"])
+        const values = await AsyncStorage.getAllKeys()
+        console.log(values)
+        const value = await AsyncStorage.getItem("distance");
+        console.log(value)
+        console.log(value["distance"])
         setDistanceToggle('Within ' + itemvalue + ' miles');
         setToggleDropdown(false);
 
@@ -52,7 +53,7 @@ function MarketsScreen() {
 
 
 
-    const [fetchedMarkets, setFetchedMarkets] = useState();
+    const [fetchedMarkets, setFetchedMarkets] = useState([]);
     const [preferences, setPreferences] = useState([]);
 
 
@@ -100,11 +101,11 @@ function MarketsScreen() {
                         market["y"], market["x"],
                         prefs["y_cord"], prefs["x_cord"]
                     );
-                    console.log(distance, market.name);
-                    console.log(market.y, market.x);
+                    // console.log(distance, market.name);
+                    // console.log(market.y, market.x);
                     market["distance"] = distance;
                     if (isNaN(distance)) {
-                        console.log("FAILED: ", market.y, market.x, "ID: ", market.id);
+                        // console.log("FAILED: ", market.y, market.x, "ID: ", market.id);
                     }
                 }
                 console.log(prefs);
@@ -115,12 +116,14 @@ function MarketsScreen() {
 
 
             setFetchedMarkets(markets);
+            console.log(fetchedMarkets[0]);
         }
 
         getMarkets();
     }, []);
 
     return (
+        
         <View>
             <View style={styles.header} >
 
@@ -169,10 +172,24 @@ function MarketsScreen() {
                 </View>
 
             </View>
-
+            {/* adding view for flatlist */}
+            <View>
+                <FlatList  
+                    data={fetchedMarkets}
+                    renderItem={(itemData) => {
+                        return <Result 
+                                    mName={itemData.item.name} 
+                                    mDist={itemData.item.distance}
+                                    mHours={itemData.item.open}
+                                />;}}
+                    alwaysBounceVertical={false}
+                />
+            </View>
 
         </View >);
 }
+
+
 export default MarketsScreen;
 
 const styles = StyleSheet.create({
