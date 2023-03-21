@@ -9,7 +9,8 @@ function Result(props){
     return(
     <View style={styles.resultOuterContainer}>
         
-        <Text style={styles.nameText}>{props.mName}{props.mDist}</Text>
+        <Text style={styles.nameText}>{props.mName}</Text>
+        <Text style={styles.detailsText}>{props.mDist} miles away</Text>
         <Text style={styles.detailsText}>{props.mDist}</Text>
        
     </View>);

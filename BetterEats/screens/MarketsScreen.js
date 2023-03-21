@@ -138,7 +138,7 @@ function MarketsScreen() {
     //     console.log(radius);
     // }
     const filteredMarkets = fetchedMarkets.filter((a) => +a.distance <= +mileValue);
-    filteredMarkets.sort((a,b) => a.distance - b.distance)
+    //filteredMarkets.sort((a,b) => a.distance - b.distance)
     // console.log(filteredMarkets.length)
     // console.log(fetchedMarkets.length)
 
