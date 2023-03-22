@@ -7,7 +7,7 @@ import { getDistanceFromLatLonInMiles, rankMarkets } from "../utility/utilityfun
 import Result from "../components/Result";
 import React, { useState, useEffect } from 'react';
 
-function MarketsScreen() {
+function MarketsScreen({navigation}) {
 
     //handling search
     const [searchQuery, setSearchQuery] = useState('');
@@ -38,7 +38,7 @@ function MarketsScreen() {
 
 
     async function distanceHandler(itemvalue) {
-
+        
         setMileValue(itemvalue);
         AsyncStorage.setItem("distance", itemvalue);
 
@@ -195,14 +195,17 @@ function MarketsScreen() {
             {/* adding view for flatlist */}
             <View>
                 <FlatList  
+                    contentContainerStyle={{ paddingBottom: 450 }}
                     data={filteredMarkets}
                     renderItem={(itemData) => {
                         return <Result 
-                                    mName={itemData.item.name} 
-                                    mDist={itemData.item.distance}
-                                    mOpen={itemData.item.open}
-                                    mClose={itemData.item.close}
-                                    mDays={itemData.item.open_days}
+                                    // mName={itemData.item.name} 
+                                    // mDist={itemData.item.distance}
+                                    // mHours={itemData.item.operating_hours}
+                                    // mDays={itemData.item.open_days}
+                                    // mStatus={itemData.item.is_open}
+                                    // mAddy={itemData.item.address}
+                                    market={itemData.item}
 
                                 />;}}
                     alwaysBounceVertical={false}

@@ -43,6 +43,7 @@ export async function fetchMarkets() {
             close: parseInt(response.data[key]['close']),
             x: response.data[key]['location_x'],
             y: response.data[key]['location_y'],
+            operating_hours: response.data[key]['operating_hours'],
             open_days: open_days
         };
         markets.push(marketObj);
