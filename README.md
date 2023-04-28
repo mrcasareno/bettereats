@@ -1,0 +1,5 @@
+BetterEats:
+A cross-platform mobile application to encourage healthy eating.
+BetterEats utilizes user preferences, real-time user location, and the USDA Farmers Market Directory API to generate ranked recommendations for nearby farmers markets.
+
+Built over a 10-week period for CS125 at UCI.
